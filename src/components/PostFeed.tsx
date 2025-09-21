@@ -2,7 +2,8 @@ import PostCard from './PostCard';
 import { Post } from '@/types';
 
 async function getPosts(): Promise<Post[]> {
-  const res = await fetch('http://localhost:3000/api/posts', {
+  const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+  const res = await fetch(`${apiUrl}/posts`, {
     cache: 'no-store',
   });
   if (!res.ok) {
