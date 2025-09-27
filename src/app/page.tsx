@@ -1,13 +1,18 @@
-import { Suspense } from 'react';
-import PostFeed from '@/components/PostFeed';
+import { Post } from '@/types';
+import HomeClient from './HomeClient';
 
-export default function Home() {
-  return (
-    <main style={{ maxWidth: '800px', margin: '0 auto', padding: '20px' }}>
-      <h1 style={{ textAlign: 'center' }}>Our Social Media App!!!</h1>
-      <Suspense fallback={<p>Loading posts...</p>}>
-        <PostFeed />
-      </Suspense>
-    </main>
-  );
+async function getPosts(): Promise<Post[]> {
+  const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+  const res = await fetch(`${apiUrl}/posts`, {
+    cache: 'no-store',
+  });
+  if (!res.ok) {
+    throw new Error('Failed to fetch posts from the API');
+  }
+  return res.json();
+}
+
+export default async function HomePage() {
+  const posts = await getPosts();
+  return <HomeClient initialPosts={posts} />;
 }
