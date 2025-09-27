@@ -23,7 +23,10 @@ export default function NavBar() {
         Home
       </Link>
       {token ? (
-        <button onClick={handleLogout}>Logout</button>
+        <>
+          <Link href="/settings">Settings</Link> |
+          <button onClick={handleLogout}>Logout</button>
+        </>
       ) : (
         <>
           <Link href="/login" style={{ marginRight: '1rem' }}>
