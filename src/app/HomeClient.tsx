@@ -13,7 +13,7 @@ type HomeClientProps = {
 export default function HomeClient({ initialPosts }: HomeClientProps) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [posts, setPosts] = useState(initialPosts);
-  const { token } = useAuthStore();
+  const { user } = useAuthStore();
 
   const handlePostCreated = (newPost: Post) => {
     setPosts((currentPosts) => [newPost, ...currentPosts]);
@@ -23,7 +23,7 @@ export default function HomeClient({ initialPosts }: HomeClientProps) {
     <main>
       <header>
         <h1>Home Feed</h1>
-        {token && (
+        {user && (
           <button onClick={() => setIsModalOpen(true)}>Create Post</button>
         )}
       </header>

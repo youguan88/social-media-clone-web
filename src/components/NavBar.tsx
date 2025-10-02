@@ -5,10 +5,10 @@ import { useAuthStore } from '@/store/auth.store';
 import { useRouter } from 'next/navigation';
 
 export default function NavBar() {
-  const { token, setToken } = useAuthStore();
+  const { user, setAuthState } = useAuthStore();
   const router = useRouter();
   const handleLogout = () => {
-    setToken(null);
+    setAuthState(null, null);
     router.push('/login');
   };
   return (
@@ -22,7 +22,7 @@ export default function NavBar() {
       <Link href="/" style={{ marginRight: '1rem' }}>
         Home
       </Link>
-      {token ? (
+      {user ? (
         <>
           <Link href="/settings">Settings</Link> |
           <button onClick={handleLogout}>Logout</button>

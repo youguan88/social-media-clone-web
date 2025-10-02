@@ -1,19 +1,14 @@
 import { create } from 'zustand';
-import { persist } from 'zustand/middleware';
+import { User } from '@/types';
 
-interface AuthState {
-  token: string | null;
-  setToken: (token: string | null) => void;
-}
+type AuthState = {
+  user: User | null;
+  csrfToken: string | null;
+  setAuthState: (user: User | null, csrfToken: string | null) => void;
+};
 
-export const useAuthStore = create(
-  persist<AuthState>(
-    (set) => ({
-      token: null,
-      setToken: (token) => set({ token }),
-    }),
-    {
-      name: 'auth-storage',
-    },
-  ),
-);
+export const useAuthStore = create<AuthState>((set) => ({
+  user: null,
+  csrfToken: null,
+  setAuthState: (user, csrfToken) => set({ user, csrfToken }),
+}));

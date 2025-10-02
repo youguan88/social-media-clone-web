@@ -2,7 +2,7 @@ import { Post } from '@/types';
 import HomeClient from './HomeClient';
 
 async function getPosts(): Promise<Post[]> {
-  const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+  const apiUrl = process.env.INTERNAL_API_URL;
   const res = await fetch(`${apiUrl}/posts`, {
     cache: 'no-store',
   });

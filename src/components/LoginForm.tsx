@@ -7,7 +7,7 @@ export default function LoginForm() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState<string | null>(null);
-  const setToken = useAuthStore((state) => state.setToken);
+  const { setAuthState } = useAuthStore();
   const router = useRouter();
 
   const handleSubmit = async (event: React.FormEvent) => {
@@ -26,8 +26,8 @@ export default function LoginForm() {
         const errorData = await response.json();
         throw new Error(errorData.message || 'Login failed');
       }
-      const data = await response.json();
-      setToken(data.token);
+      const { user, csrfToken } = await response.json();
+      setAuthState(user, csrfToken);
       router.push('/');
     } catch (err) {
       if (err instanceof Error) {
