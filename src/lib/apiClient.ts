@@ -3,16 +3,29 @@ import { useAuthStore } from '@/store/auth.store';
 const getAuthState = () => useAuthStore.getState();
 
 export const apiClient = {
+  async get<T>(path: string): Promise<T> {
+    return this.request<T>(path, {
+      method: 'GET',
+    });
+  },
   async post<T>(path: string, body: object): Promise<T> {
     return this.request<T>(path, {
       method: 'POST',
       body: JSON.stringify(body),
     });
   },
+  async delete<T>(path: string): Promise<T> {
+    return this.request<T>(path, {
+      method: 'DELETE',
+    });
+  },
   async request<T>(path: string, options: RequestInit): Promise<T> {
     const { csrfToken } = getAuthState();
     const headers = new Headers(options.headers);
-    headers.set('Content-Type', 'application/json');
+
+    if (options.body) {
+      headers.set('Content-Type', 'application/json');
+    }
 
     if (
       options.method &&
@@ -30,7 +43,9 @@ export const apiClient = {
     });
 
     if (!res.ok) {
-      const errorData = await res.json();
+      const errorData = await res
+        .json()
+        .catch(() => ({ message: res.statusText }));
       throw new Error(
         errorData.message || `API request failed with status ${res.status}`,
       );

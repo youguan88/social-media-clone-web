@@ -36,11 +36,7 @@ export default function HomeClient({ initialPosts }: HomeClientProps) {
 
       <section>
         {posts.map((post) => (
-          <PostCard
-            key={post.id}
-            content={post.content}
-            authorEmail={post.author.email}
-          />
+          <PostCard key={post.id} post={post} />
         ))}
       </section>
     </main>
